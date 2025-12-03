@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced AI Features | ECHOSENSE AI</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #1a0b2e 0%, #0f1a2e 50%, #2e0b1a 100%);
+      color: #ffffff;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 60%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ---------- HEADER ---------- */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 15px 8%;
+      background: rgba(10, 10, 10, 0.95);
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #0077ff 0%, #00d4ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #0077ff, #00d4ff);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #ffffff;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* ---------- HERO SECTION ---------- */
+    .hero {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 140px 8% 80px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(236, 72, 153, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(59, 130, 246, 0.2) 0%, transparent 50%);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(236, 72, 153, 0.25) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.25) 0%, transparent 50%);
+      z-index: 0;
+      filter: blur(40px);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: 0;
+      pointer-events: none;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      animation: fadeInUp 1s ease;
+    }
+
+    .hero h2 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #ec4899 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 40px;
+      line-height: 1.7;
+      font-weight: 400;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ---------- FEATURES SECTION ---------- */
+    .features-section {
+      padding: 100px 8%;
+      position: relative;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #ec4899 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 700px;
+      margin: 0 auto 60px;
+      line-height: 1.7;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+      margin-top: 60px;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 0;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ec4899, #3b82f6);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(236, 72, 153, 0.3);
+      box-shadow: 0 20px 60px rgba(236, 72, 153, 0.2);
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-card-image {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .feature-card-content {
+      padding: 20px 18px;
+    }
+
+    .feature-icon {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .feature-card p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .go-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #ec4899 0%, #3b82f6 100%);
+      color: #fff;
+      padding: 10px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.3);
+    }
+
+    .go-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(236, 72, 153, 0.5);
+    }
+
+    /* ---------- BACK BUTTON ---------- */
+    .back-section {
+      text-align: center;
+      padding: 60px 8% 100px;
+    }
+
+    .btn-back {
+      display: inline-block;
+      background: linear-gradient(135deg, #6d28d9 0%, #3b82f6 100%);
+      color: #fff;
+      padding: 14px 40px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 30px rgba(109, 40, 217, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-back:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(109, 40, 217, 0.5);
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      background-color: #050505;
+      padding: 40px 8% 25px;
+      color: rgba(255, 255, 255, 0.6);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    /* ---------- ANIMATIONS ---------- */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 768px) {
+      .hero h2 {
+        font-size: 2.5rem;
+      }
+
+      .section-title {
+        font-size: 2.2rem;
+      }
+
+      nav {
+        gap: 10px;
+      }
+
+      nav a {
+        font-size: 0.85rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header id="header">
+    <h1>ECHOSENSE AI</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#features">Features</a>
+      <a href="index.html#about">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Advanced AI Call Monitoring Tools</h2>
+      <p>Explore powerful tools that enhance your business communication with real-time intelligence, performance
+        insights, and learning-based improvements.</p>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <h2 class="section-title">Powerful Monitoring Solutions</h2>
+    <p class="section-subtitle">Transform your call analytics workflow with cutting-edge AI-powered features designed
+      for modern businesses.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <img src="https://images.pexels.com/photos/8867430/pexels-photo-8867430.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Live Call Analysis" class="feature-card-image">
+        <div class="feature-card-content">
+          <div class="feature-icon">📊</div>
+          <h3>Live Call Analysis</h3>
+          <p>Analyze ongoing calls in real-time using AI-driven metrics for tone, keywords, and sentiment to guide
+            agents toward better performance instantly.</p>
+          <a href="live-analysis.html" class="go-btn">Explore Feature</a>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <img src="https://images.pexels.com/photos/7988089/pexels-photo-7988089.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Recording Analysis & Upload" class="feature-card-image">
+        <div class="feature-card-content">
+          <div class="feature-icon">🎙️</div>
+          <h3>Recording Analysis & Upload</h3>
+          <p>Upload audio files to analyze customer sentiment, compliance, and communication patterns for each
+            interaction.</p>
+          <a href="upload.html" class="go-btn">Upload Audio</a>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <img src="https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Previous Analysis Feedback" class="feature-card-image">
+        <div class="feature-card-content">
+          <div class="feature-icon">📈</div>
+          <h3>Previous Analysis Feedback</h3>
+          <p>Review insights from past conversations and identify recurring trends, issues, or improvements to optimize
+            your team's communication strategy.</p>
+          <a href="dashboard.html" class="go-btn">View Dashboard</a>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <img src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Training Based on Previous Analysis" class="feature-card-image">
+        <div class="feature-card-content">
+          <div class="feature-icon">🎓</div>
+          <h3>Training Based on Previous Analysis</h3>
+          <p>Empower your workforce with customized training sessions generated from past performance and AI-driven
+            feedback models for continuous improvement.</p>
+          <a href="training.html" class="go-btn">View Training</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="back-section">
+    <a href="index.html" class="btn-back">Back to Home</a>
+  </section>
+
+  <footer>
+    <p>© 2025 ECHOSENSE AI | All Rights Reserved</p>
+  </footer>
+
+  <script>
+    // Header scroll effect
+    const header = document.getElementById("header");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 50) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    });
+  </script>
+
+</body>
+
+</html>

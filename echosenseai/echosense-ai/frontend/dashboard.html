@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | ECHOSENSE AI</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      color: #ffffff;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #0077ff 0%, #00d4ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: #0077ff;
+    }
+
+    /* Main Content */
+    main {
+      padding: 100px 8% 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #ffffff 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .page-subtitle {
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 40px;
+      font-size: 1.1rem;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, rgba(20, 20, 20, 0.8) 0%, rgba(30, 30, 30, 0.6) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 25px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0, 119, 255, 0.3);
+      box-shadow: 0 10px 40px rgba(0, 119, 255, 0.1);
+    }
+
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, rgba(0, 119, 255, 0.2) 0%, rgba(0, 212, 255, 0.2) 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Section */
+    .section {
+      background: linear-gradient(135deg, rgba(20, 20, 20, 0.8) 0%, rgba(30, 30, 30, 0.6) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #0077ff 0%, #0055cc 100%);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 119, 255, 0.4);
+    }
+
+    /* Table */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-completed {
+      background: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
+    }
+
+    .status-processing {
+      background: rgba(59, 130, 246, 0.2);
+      color: #3b82f6;
+    }
+
+    .status-uploaded {
+      background: rgba(251, 191, 36, 0.2);
+      color: #fbbf24;
+    }
+
+    .status-failed {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    .score {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .score-excellent {
+      color: #22c55e;
+    }
+
+    .score-good {
+      color: #3b82f6;
+    }
+
+    .score-average {
+      color: #fbbf24;
+    }
+
+    .score-poor {
+      color: #ef4444;
+    }
+
+    /* Chart Container */
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin-top: 20px;
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid #0077ff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Error */
+    .error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      color: #ef4444;
+      margin: 20px 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      main {
+        padding: 100px 5% 40px;
+      }
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      position: relative;
+      background: linear-gradient(135deg, rgba(30, 30, 30, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>ECHOSENSE AI</h1>
+    <nav>
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="upload.html">Upload</a>
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">Monitor your call analytics and performance metrics</p>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <div class="stat-icon">📞</div>
+        <div class="stat-value" id="totalCalls">--</div>
+        <div class="stat-label">Total Calls</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value" id="processedCalls">--</div>
+        <div class="stat-label">Processed Calls</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-value" id="avgQuality">--</div>
+        <div class="stat-label">Avg Quality Score</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚠️</div>
+        <div class="stat-value" id="complianceFlags">--</div>
+        <div class="stat-label">Compliance Flags</div>
+      </div>
+    </div>
+
+    <!-- Quality Trends Chart -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Quality Trends (Last 30 Days)</h2>
+      </div>
+      <div class="chart-container">
+        <canvas id="qualityChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Recent Calls -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Recent Calls</h2>
+        <a href="upload.html" class="btn">
+          <i class="fas fa-upload"></i> Upload New Call
+        </a>
+      </div>
+      <div class="table-container" id="recentCallsContainer">
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>Loading recent calls...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteModal" class="modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeDeleteModal()"></div>
+    <div class="modal-content">
+      <h3 style="margin-bottom: 15px; font-size: 1.5rem;">
+        <i class="fas fa-exclamation-triangle" style="color: #ef4444; margin-right: 10px;"></i>
+        Confirm Deletion
+      </h3>
+      <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">
+        Are you sure you want to delete <strong id="deleteFileName"></strong>?
+      </p>
+      <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 25px;">
+        This will permanently remove the call recording, transcript, quality scores, and all related data. This action
+        cannot be undone.
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button onclick="closeDeleteModal()" class="btn" style="background: rgba(255,255,255,0.1);">
+          Cancel
+        </button>
+        <button onclick="deleteCall()" class="btn"
+          style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    let qualityChart = null;
+
+    // Load dashboard data
+    async function loadDashboard() {
+      try {
+        // Load stats
+        const stats = await api.getDashboardStats(7);
+        document.getElementById('totalCalls').textContent = stats.total_calls || 0;
+        document.getElementById('processedCalls').textContent = stats.processed_calls || 0;
+        document.getElementById('avgQuality').textContent = stats.avg_quality_score ? stats.avg_quality_score.toFixed(1) : 'N/A';
+        document.getElementById('complianceFlags').textContent = stats.total_compliance_flags || 0;
+
+        // Load recent calls
+        await loadRecentCalls();
+
+        // Load quality trends
+        await loadQualityTrends();
+      } catch (error) {
+        console.error('Error loading dashboard:', error);
+        showError('Failed to load dashboard data. Make sure the backend is running.');
+      }
+    }
+
+    // Load recent calls
+    async function loadRecentCalls() {
+      try {
+        const data = await api.getRecentCalls(10);
+        const container = document.getElementById('recentCallsContainer');
+
+        if (data.calls && data.calls.length > 0) {
+          const tableHTML = `
+            <table>
+              <thead>
+                <tr>
+                  <th>Filename</th>
+                  <th>Duration</th>
+                  <th>Status</th>
+                  <th>Quality Score</th>
+                  <th>Uploaded</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${data.calls.map(call => `
+                  <tr data-call-id="${call.call_id}">
+                    <td>${call.filename}</td>
+                    <td>${formatDuration(call.duration)}</td>
+                    <td>
+                      <span class="status-badge status-${call.status}">
+                        ${call.status === 'processing' ? '<i class="fas fa-spinner fa-spin" style="margin-right: 5px;"></i>' : ''}
+                        ${call.status}
+                      </span>
+                    </td>
+                    <td>${call.overall_score ? `<span class="score ${getScoreClass(call.overall_score)}">${call.overall_score.toFixed(1)}</span>` : 'N/A'}</td>
+                    <td>${formatDate(call.uploaded_at)}</td>
+                    <td>
+                      <a href="call-details.html?id=${call.call_id}" class="btn" style="padding: 6px 12px; font-size: 0.8rem; margin-right: 8px;">View</a>
+                      <button onclick="confirmDelete('${call.call_id}', '${call.filename}')" class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+          container.innerHTML = tableHTML;
+        } else {
+          container.innerHTML = '<p style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">No calls found. <a href="upload.html" style="color: #0077ff;">Upload your first call</a></p>';
+        }
+      } catch (error) {
+        console.error('Error loading recent calls:', error);
+        document.getElementById('recentCallsContainer').innerHTML = '<div class="error">Failed to load recent calls</div>';
+      }
+    }
+
+    // Load quality trends chart
+    async function loadQualityTrends() {
+      try {
+        const data = await api.getQualityTrends(30);
+
+        if (data.trends && data.trends.length > 0) {
+          const ctx = document.getElementById('qualityChart').getContext('2d');
+
+          if (qualityChart) {
+            qualityChart.destroy();
+          }
+
+          qualityChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: data.trends.map(t => t.date),
+              datasets: [{
+                label: 'Average Quality Score',
+                data: data.trends.map(t => t.avg_score),
+                borderColor: '#0077ff',
+                backgroundColor: 'rgba(0, 119, 255, 0.1)',
+                tension: 0.4,
+                fill: true
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  labels: {
+                    color: 'rgba(255, 255, 255, 0.8)'
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 100,
+                  ticks: {
+                    color: 'rgba(255, 255, 255, 0.6)'
+                  },
+                  grid: {
+                    color: 'rgba(255, 255, 255, 0.1)'
+                  }
+                },
+                x: {
+                  ticks: {
+                    color: 'rgba(255, 255, 255, 0.6)'
+                  },
+                  grid: {
+                    color: 'rgba(255, 255, 255, 0.1)'
+                  }
+                }
+              }
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error loading quality trends:', error);
+      }
+    }
+
+    // Helper functions
+    function formatDuration(seconds) {
+      if (!seconds) return 'N/A';
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return 'N/A';
+      const date = new Date(dateString);
+      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function getScoreClass(score) {
+      if (score >= 80) return 'score-excellent';
+      if (score >= 60) return 'score-good';
+      if (score >= 40) return 'score-average';
+      return 'score-poor';
+    }
+
+    function showError(message) {
+      const statsGrid = document.getElementById('statsGrid');
+      statsGrid.insertAdjacentHTML('beforebegin', `<div class="error">${message}</div>`);
+    }
+
+    // Load dashboard on page load
+    document.addEventListener('DOMContentLoaded', loadDashboard);
+
+    // Delete functionality
+    let callToDelete = null;
+
+    function confirmDelete(callId, filename) {
+      callToDelete = callId;
+      document.getElementById('deleteFileName').textContent = filename;
+      document.getElementById('deleteModal').style.display = 'flex';
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').style.display = 'none';
+      callToDelete = null;
+    }
+
+    async function deleteCall() {
+      if (!callToDelete) return;
+
+      try {
+        // Show loading state
+        const deleteBtn = event.target.closest('button');
+        const originalContent = deleteBtn.innerHTML;
+        deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+        deleteBtn.disabled = true;
+
+        // Delete the call
+        await api.deleteCall(callToDelete);
+
+        // Remove from table
+        const row = document.querySelector(`tr[data-call-id="${callToDelete}"]`);
+        if (row) {
+          row.style.opacity = '0';
+          row.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => row.remove(), 300);
+        }
+
+        // Close modal
+        closeDeleteModal();
+
+        // Reload dashboard data
+        setTimeout(() => loadDashboard(), 500);
+
+      } catch (error) {
+        alert('Failed to delete call: ' + error.message);
+        closeDeleteModal();
+      }
+    }
+  </script>
+
+</body>
+
+</html>

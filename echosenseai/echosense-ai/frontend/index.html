@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECHOSENSE AI - Premium Edition</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: transparent;
+      color: #ffffff;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ---------- GLOBAL BACKGROUND VIDEO ---------- */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -100;
+      opacity: 0.4;
+      filter: saturate(1.2) contrast(1.1);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #0a0a0a;
+      z-index: -101;
+    }
+
+    /* ---------- HEADER ---------- */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 10, 0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 15px 8%;
+      background: rgba(10, 10, 10, 0.9);
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #0077ff 0%, #00d4ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #0077ff, #00d4ff);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #ffffff;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .signin-btn {
+      background: linear-gradient(135deg, #0077ff 0%, #0055cc 100%);
+      color: #fff !important;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3);
+    }
+
+    .signin-btn::after {
+      display: none;
+    }
+
+    .signin-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(0, 119, 255, 0.5);
+    }
+
+    .login-btn {
+      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+      color: #fff !important;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+    }
+
+    .login-btn::after {
+      display: none;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(139, 92, 246, 0.5);
+    }
+
+    /* ---------- HERO SECTION ---------- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 8% 80px;
+      position: relative;
+      overflow: hidden;
+      background: transparent; 
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+          radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.15) 0%, transparent 60%),
+          radial-gradient(circle at 80% 70%, rgba(0, 119, 255, 0.15) 0%, transparent 60%),
+          radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 100%);
+      z-index: 1;
+      filter: blur(20px);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: 1;
+      pointer-events: none;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      animation: fadeInUp 1s ease;
+    }
+
+    .hero h2 {
+      font-size: 4.5rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 25px;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #ffffff 30%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 40px;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: linear-gradient(135deg, #6d28d9 0%, #3b82f6 100%);
+      color: #fff;
+      padding: 16px 40px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 30px rgba(109, 40, 217, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: popOut 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.8s backwards;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(109, 40, 217, 0.6);
+    }
+
+    /* ---------- SECTION STYLES ---------- */
+    section {
+      padding: 100px 8%;
+      position: relative;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 60px;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ---------- FEATURES GRID ---------- */
+    #features {
+      background:
+        radial-gradient(circle at 10% 20%, rgba(0, 119, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
+      backdrop-filter: blur(5px);
+    }
+
+    #features .section-title {
+      background: linear-gradient(135deg, #3b82f6 0%, #4ade80 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, rgba(20, 20, 20, 0.7) 0%, rgba(30, 30, 30, 0.4) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px 35px;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .feature-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #22c55e);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(34, 197, 94, 0.3);
+      box-shadow: 0 20px 60px rgba(0, 119, 255, 0.1);
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(34, 197, 94, 0.2) 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .feature-card p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1rem;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    /* ---------- SHOWCASE SECTION ---------- */
+    .showcase {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(6, 182, 212, 0.02) 100%);
+      border-radius: 30px;
+      padding: 80px 60px;
+      margin: 80px auto;
+      max-width: 1200px;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      text-align: center;
+      box-shadow: 0 0 50px rgba(6, 182, 212, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .showcase-image {
+      width: 100%;
+      max-width: 700px;
+      border-radius: 20px;
+      margin-bottom: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .showcase p {
+      font-size: 1.2rem;
+      color: rgba(220, 250, 255, 0.9);
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+
+    /* ---------- ABOUT SECTION ---------- */
+    .about-container {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      background:
+        radial-gradient(circle at top left, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at bottom right, rgba(0, 119, 255, 0.1) 0%, transparent 50%),
+        rgba(15, 15, 15, 0.7);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-right-color: rgba(0, 119, 255, 0.15);
+      border-bottom-color: rgba(0, 119, 255, 0.15);
+      border-radius: 25px;
+      padding: 60px 50px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    .about-container h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, #34d399 0%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+    }
+
+    .about-container p {
+      font-size: 1.15rem;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.8;
+      font-weight: 400;
+    }
+
+    /* ---------- CREATOR SECTION ---------- */
+    .creator {
+      text-align: center;
+      padding: 80px 8%;
+      background: linear-gradient(90deg, rgba(0, 119, 255, 0.05) 0%, rgba(239, 68, 68, 0.05) 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+    }
+
+    .creator::before {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(0, 119, 255, 0.2) 0%, transparent 70%);
+      top: -50px; left: -50px;
+      z-index: 0;
+      filter: blur(40px);
+    }
+
+    .creator::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.2) 0%, transparent 70%);
+      bottom: -50px; right: -50px;
+      z-index: 0;
+      filter: blur(40px);
+    }
+
+    .creator h2 {
+      position: relative;
+      z-index: 1;
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #3b82f6 0%, #ef4444 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .creator p {
+      position: relative;
+      z-index: 1;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto 15px;
+      line-height: 1.7;
+    }
+
+    .creator a {
+      position: relative;
+      z-index: 1;
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .creator a:hover {
+      color: #ef4444;
+      text-decoration: underline;
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      background-color: rgba(5, 5, 5, 0.85);
+      backdrop-filter: blur(20px);
+      padding: 60px 8% 30px;
+      color: rgba(255, 255, 255, 0.7);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-section h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #0077ff 0%, #00d4ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-section p,
+    .footer-section a {
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.8;
+      font-size: 0.95rem;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 10px;
+      transition: color 0.3s ease;
+    }
+
+    .footer-section a:hover {
+      color: #0077ff;
+    }
+
+    .footer-section .contact-item {
+      display: flex;
+      align-items: start;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .footer-section .contact-item i {
+      color: #0077ff;
+      font-size: 1.1rem;
+      margin-top: 3px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .social-links a {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.7); /* Standard icon color */
+    }
+
+    .social-links a:hover {
+      background: linear-gradient(135deg, #0077ff 0%, #00d4ff 100%);
+      border-color: transparent;
+      transform: translateY(-3px);
+      color: #ffffff; /* Icon becomes white on hover */
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.9rem;
+    }
+
+    /* ---------- MODAL ---------- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+      margin: 8% auto;
+      padding: 50px 45px;
+      border-radius: 25px;
+      width: 90%;
+      max-width: 450px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 35px;
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #0077ff 0%, #00d4ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .modal-content label {
+      display: block;
+      text-align: left;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.03);
+      color: #fff;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .modal-content input:focus {
+      outline: none;
+      border-color: #0077ff;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .modal-content button {
+      width: 100%;
+      background: linear-gradient(135deg, #0077ff 0%, #0055cc 100%);
+      color: #fff;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(0, 119, 255, 0.3);
+      margin-top: 10px;
+    }
+
+    .modal-content button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(0, 119, 255, 0.5);
+    }
+
+    .close {
+      color: rgba(255, 255, 255, 0.5);
+      float: right;
+      font-size: 32px;
+      font-weight: 300;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      line-height: 1;
+    }
+
+    .close:hover {
+      color: #fff;
+    }
+
+    /* ---------- ANIMATIONS ---------- */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes popOut {
+      0% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 768px) {
+      .hero h2 {
+        font-size: 3rem;
+      }
+
+      .section-title {
+        font-size: 2.2rem;
+      }
+
+      nav {
+        gap: 15px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <video autoplay muted loop playsinline id="bg-video">
+      <source src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" type="video/mp4">
+      Your browser does not support HTML5 video.
+  </video>
+
+  <header id="header">
+    <h1>ECHOSENSE AI</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="#" class="login-btn">Login</a>
+      <a href="#" class="signin-btn">Sign In</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h2>AI-Powered Call Monitoring</h2>
+      <p>Empowering businesses to analyze, record, and understand customer calls with real-time AI insights.</p>
+      <a href="getstared.html" class="btn-primary">Get Started</a>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-container">
+      <h2>About Our ECHOSENSE AI</h2>
+      <p>Our platform uses advanced artificial intelligence to streamline customer interaction monitoring. It helps organizations ensure high-quality communication, compliance, and performance by transcribing, analyzing, and summarizing calls in real-time. Whether you're running a customer support team or managing sales calls, our AI makes it effortless to stay informed and efficient.</p>
+    </div>
+  </section>
+
+  <section id="features">
+    <h2 class="section-title">Key Features</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <img src="https://sourcemediakw.com/wp-content/uploads/2023/04/%D8%A3%D9%81%D8%B6%D9%84-%D8%AA%D8%B7%D8%A8%D9%8A%D9%82%D8%A7%D8%AA-%D8%AA%D8%B3%D8%AC%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D9%83%D8%A7%D9%84%D9%85%D8%A7%D8%AA-e1680787110807.jpg" alt="Call Recording" class="feature-card-image">
+        <div class="feature-icon">📞</div>
+        <h3>Call Recording</h3>
+        <p>Securely record phone calls for future reference and analysis, ensuring data privacy and compliance.</p>
+      </div>
+      <div class="feature-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR93BA8vZVs1S9P4iVg0nj4D893dYmJFdvvig&s" alt="Speech to Text" class="feature-card-image">
+        <div class="feature-icon">🎤</div>
+        <h3>Speech-to-Text</h3>
+        <p>Transcribe call recordings into accurate text format using AI-driven voice recognition technology.</p>
+      </div>
+      <div class="feature-card">
+        <img src="https://images.pexels.com/photos/905163/pexels-photo-905163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Sentiment Analysis" class="feature-card-image">
+        <div class="feature-icon">😊</div>
+        <h3>Sentiment Analysis</h3>
+        <p>Analyze caller sentiment and tone to measure satisfaction, engagement, and agent performance.</p>
+      </div>
+      <div class="feature-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPXBsYR-f9RxU6uz9_0rrQ8uoa7zEB6kfc5g&s" alt="Keyword Extraction" class="feature-card-image">
+        <div class="feature-icon">🔍</div>
+        <h3>Keyword Extraction</h3>
+        <p>Automatically identify key topics, phrases, and product mentions discussed during each conversation.</p>
+      </div>
+      <div class="feature-card">
+        <img src="https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Reporting Dashboard" class="feature-card-image">
+        <div class="feature-icon">📊</div>
+        <h3>Reporting Dashboard</h3>
+        <p>Visualize insights on call metrics, sentiment trends, and performance with interactive charts and reports.</p>
+      </div>
+      <div class="feature-card">
+        <img src="https://www.goanywhere.com/sites/default/files/styles/og_image/public/goanywhere/ga-the-data-security-lifecycle-blog-850x330.jpg.webp?itok=vL8t-n_n" alt="Data Security" class="feature-card-image">
+        <div class="feature-icon">🔒</div>
+        <h3>Data Security</h3>
+        <p>All data is encrypted and processed under strict security protocols to ensure compliance with industry standards like GDPR and ISO 27001.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="showcase">
+    <img src="https://media.licdn.com/dms/image/v2/C4E12AQHr2dkud3ASSw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1589489540806?e=2147483647&v=beta&t=sr8Jkpbr0lFfBBj2pNpbLjZVueZ6ZK9ltsJAAdmPY1k" alt="AI Dashboard Analysis" class="showcase-image">
+    <p>ECHOSENSE AI bridges the communication gap — ensuring every conversation, from customer support to sales, is optimized for clarity, compliance, and empathy. Visualize real interactions and gain powerful insights through intelligent AI analysis.</p>
+  </section>
+
+  <section id="about-2">
+    <div class="about-container">
+      <h2>About Our ECHOSENSE AI</h2>
+      <p>Our platform uses advanced artificial intelligence to streamline customer interaction monitoring. It helps organizations ensure high-quality communication, compliance, and performance by transcribing, analyzing, and summarizing calls in real-time. Whether you're running a customer support team or managing sales calls, our AI makes it effortless to stay informed and efficient.</p>
+    </div>
+  </section>
+
+  <section class="creator" id="contact">
+    <h2>About the Creator</h2>
+    <p>Created with passion by <strong>Siddharth, Tanishq, Sudhanshu and Raushan</strong> — web developers and AI enthusiasts who believe in merging technology with human communication. Dedicated to creating intelligent, user-friendly digital experiences.</p>
+    <p>Connect on <a href="https://linkedin.com" target="_blank">LinkedIn</a> or <a href="mailto:creator@example.com">Email</a>.</p>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>ECHOSENSE AI</h3>
+        <p>Transforming customer conversations into actionable insights with cutting-edge AI technology.</p>
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/echosense-ai-a2706b393/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://x.com/EchosenseAi?t=B8bKxnfnI-H5IxEgK8QzTA&s=09" target="_blank" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="https://www.facebook.com/profile.php?id=61584231732102" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/echosense.ai/?igsh=MXJrOWtmMDJmeTExbA%3D%3D#" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+        <div class="contact-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <p>Himalya-4 <br>Poornima University, Jaipur <br>302022,Rajasthan , India </p>
+        </div>
+        <div class="contact-item">
+          <i class="fa-solid fa-envelope"></i>
+          <p>ecosense429@gmail.com</p>
+        </div>
+        <div class="contact-item">
+          <i class="fa-solid fa-phone"></i>
+          <p>+91 9999999999<br>+91 9999999999</p>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 ECHOSENSE AI | All Rights Reserved | Designed by Siddharth, Tanishq, Sudhanshu & Raushan</p>
+    </div>
+  </footer>
+
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" data-modal="login">&times;</span>
+      <h2>Welcome Back</h2>
+      <form id="loginForm">
+        <label for="loginEmail">Email:</label>
+        <input type="email" id="loginEmail" name="email" required placeholder="your@email.com">
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" name="password" required placeholder="••••••••">
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="close" data-modal="signup">&times;</span>
+      <h2>Create Account</h2>
+      <form id="signupForm">
+        <label for="signupName">Full Name:</label>
+        <input type="text" id="signupName" name="name" required placeholder="John Doe">
+        <label for="signupEmail">Email:</label>
+        <input type="email" id="signupEmail" name="email" required placeholder="your@email.com">
+        <label for="signupPassword">Password:</label>
+        <input type="password" id="signupPassword" name="password" required placeholder="••••••••">
+        <label for="signupConfirmPassword">Confirm Password:</label>
+        <input type="password" id="signupConfirmPassword" name="confirmPassword" required placeholder="••••••••">
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Header scroll effect
+    const header = document.getElementById("header");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 50) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    });
+
+    // Modal functionality
+    const loginModal = document.getElementById("loginModal");
+    const signupModal = document.getElementById("signupModal");
+    const loginBtn = document.querySelector(".login-btn");
+    const signInBtn = document.querySelector(".signin-btn");
+    const closeBtns = document.querySelectorAll(".close");
+
+    // Open Login Modal
+    loginBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      loginModal.style.display = "block";
+    });
+
+    // Open Sign Up Modal
+    signInBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      signupModal.style.display = "block";
+    });
+
+    // Close modals
+    closeBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const modalType = btn.getAttribute("data-modal");
+        if (modalType === "login") {
+          loginModal.style.display = "none";
+        } else {
+          signupModal.style.display = "none";
+        }
+      });
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener("click", (e) => {
+      if (e.target === loginModal) {
+        loginModal.style.display = "none";
+      }
+      if (e.target === signupModal) {
+        signupModal.style.display = "none";
+      }
+    });
+
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("signupEmail").value;
+      alert(`Account created for: ${email}`);
+      signupModal.style.display = "none";
+      this.reset();
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      alert(`Signed in as: ${email}`);
+      loginModal.style.display = "none";
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>
