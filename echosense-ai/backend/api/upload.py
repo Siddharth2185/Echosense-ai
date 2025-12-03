@@ -1,7 +1,7 @@
 """
 File upload API endpoints
 """
-from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
+from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from typing import List
 import uuid
@@ -19,6 +19,7 @@ audio_processor = AudioProcessor()
 
 @router.post("/audio")
 async def upload_audio(
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
@@ -78,10 +79,9 @@ async def upload_audio(
         db.commit()
         db.refresh(call)
         
-        # Trigger async processing (will be handled by Celery in production)
-        # For now, we'll process synchronously in the background
-        from services.call_processor import process_call_async
-        process_call_async.delay(str(call_id))
+        # Trigger async processing
+        from services.call_processor import processor
+        background_tasks.add_task(processor.process_call, str(call_id))
         
         return {
             "call_id": str(call_id),
@@ -98,6 +98,7 @@ async def upload_audio(
 
 @router.post("/bulk")
 async def upload_bulk_audio(
+    background_tasks: BackgroundTasks,
     files: List[UploadFile] = File(...),
     db: Session = Depends(get_db)
 ):
@@ -108,7 +109,7 @@ async def upload_bulk_audio(
     
     for file in files:
         try:
-            result = await upload_audio(file, db)
+            result = await upload_audio(background_tasks, file, db)
             results.append({"filename": file.filename, "success": True, "data": result})
         except Exception as e:
             results.append({"filename": file.filename, "success": False, "error": str(e)})
