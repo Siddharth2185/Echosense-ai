@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | ECHOSENSE AI</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(220, 38, 38, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 30%, rgba(37, 99, 235, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 30% 70%, rgba(59, 130, 246, 0.06) 0%, transparent 35%),
+        radial-gradient(circle at 70% 80%, rgba(190, 18, 60, 0.07) 0%, transparent 35%),
+        #0a0a0a;
+      color: #ffffff;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(220, 38, 38, 0.04) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ---------- RETURN HOME BUTTON ---------- */
+    .return-home {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: 
+        radial-gradient(circle at 30% 30%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(59, 130, 246, 0.25) 0%, transparent 50%),
+        linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
+      color: #ffffff;
+      padding: 16px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+      border: 2px solid rgba(139, 92, 246, 0.4);
+      box-shadow: 
+        0 8px 25px rgba(139, 92, 246, 0.25),
+        0 4px 15px rgba(59, 130, 246, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+      backdrop-filter: blur(15px);
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .return-home::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(167, 139, 250, 0.3), 
+        rgba(96, 165, 250, 0.3),
+        transparent);
+      transition: left 0.6s ease;
+    }
+
+    .return-home::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 40%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 60%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: -1;
+    }
+
+    .return-home:hover::before {
+      left: 100%;
+    }
+
+    .return-home:hover::after {
+      opacity: 1;
+    }
+
+    .return-home:hover {
+      background: 
+        radial-gradient(circle at 30% 30%, rgba(139, 92, 246, 0.5) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(59, 130, 246, 0.45) 0%, transparent 50%),
+        linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(37, 99, 235, 0.3) 100%);
+      border-color: rgba(167, 139, 250, 0.6);
+      transform: translateY(-3px);
+      box-shadow: 
+        0 12px 40px rgba(139, 92, 246, 0.4),
+        0 6px 25px rgba(59, 130, 246, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
+    .return-home-section {
+      text-align: center;
+      padding: 50px 8% 40px;
+      background: 
+        radial-gradient(circle at 30% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 70% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, rgba(124, 58, 237, 0.05) 100%);
+      border-top: 1px solid rgba(139, 92, 246, 0.15);
+      position: relative;
+    }
+
+    .return-home-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    /* ---------- HEADER ---------- */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 16px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 12px 8%;
+      background: rgba(10, 10, 10, 0.95);
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #0077ff 0%, #00d4ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #0077ff, #00d4ff);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #ffffff;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a.active {
+      color: #0077ff;
+    }
+
+    .signin-btn {
+      background: linear-gradient(135deg, #0077ff 0%, #0055cc 100%);
+      color: #fff !important;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3);
+    }
+
+    .signin-btn::after {
+      display: none;
+    }
+
+    .signin-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(0, 119, 255, 0.5);
+    }
+
+    /* ---------- HERO SECTION ---------- */
+    .hero {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 140px 8% 80px;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #0f0b1a 0%, #0a0a0a 100%);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 30% 40%, rgba(0, 119, 255, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+      z-index: 0;
+      filter: blur(40px);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: 0;
+      pointer-events: none;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      animation: fadeInUp 1s ease;
+    }
+
+    .hero h2 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #ffffff 30%, #00d4ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    /* ---------- MISSION SECTION (BLUE THEME) ---------- */
+    .mission-section {
+      padding: 60px 8%;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 60%);
+      position: relative;
+    }
+
+    .mission-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(124, 58, 237, 0.08) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .mission-section h3 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 25px;
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mission-section p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.15rem;
+      margin-bottom: 20px;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---------- HOW IT WORKS (BLUE/VIOLET THEME) ---------- */
+    .how-it-works {
+      padding: 60px 8%;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: 
+        radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.14) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 60%);
+      position: relative;
+    }
+
+    .how-it-works::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 30% 40%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(37, 99, 235, 0.08) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .how-it-works h3 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 25px;
+      background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .how-it-works p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.15rem;
+      margin-bottom: 40px;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---------- VALUES GRID (BLUE/VIOLET THEME) ---------- */
+    .values-grid {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 25px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .values-grid::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: 0;
+      width: 100%;
+      height: calc(100% + 80px);
+      background: 
+        radial-gradient(circle at 25% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 50%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .value-card {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 20px;
+      padding: 35px 25px;
+      text-align: center;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      flex: 1;
+      min-width: 250px;
+      max-width: 320px;
+    }
+
+    .value-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .value-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(139, 92, 246, 0.4);
+      box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(139, 92, 246, 0.12) 100%);
+    }
+
+    .value-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .value-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 15px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(124, 58, 237, 0.2) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .value-icon img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      opacity: 0.9;
+    }
+
+    .value-card h4 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .value-card p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ---------- TEAM SECTION (BLUE & RED THEME) ---------- */
+    .team {
+      text-align: center;
+      padding: 60px 8%;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(220, 38, 38, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.12) 0%, transparent 60%),
+        linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(220, 38, 38, 0.08) 100%),
+        #0a0a0a;
+      border-top: 1px solid rgba(59, 130, 246, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .team::before {
+      content: '';
+      position: absolute;
+      width: 500px; 
+      height: 500px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+      top: -150px; 
+      left: -150px;
+      z-index: 0;
+      filter: blur(80px);
+      animation: pulse 5s ease-in-out infinite;
+    }
+    
+    .team::after {
+      content: '';
+      position: absolute;
+      width: 500px; 
+      height: 500px;
+      background: radial-gradient(circle, rgba(220, 38, 38, 0.3) 0%, transparent 70%);
+      bottom: -150px; 
+      right: -150px;
+      z-index: 0;
+      filter: blur(80px);
+      animation: pulse 5s ease-in-out infinite 2.5s;
+    }
+
+    @keyframes pulse {
+      0%, 100% { 
+        opacity: 0.6;
+        transform: scale(1);
+      }
+      50% { 
+        opacity: 1;
+        transform: scale(1.1);
+      }
+    }
+
+    .team h3 {
+      position: relative;
+      z-index: 1;
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 40px;
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 30%, #ef4444 60%, #dc2626 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -2px;
+      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      text-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
+      animation: fadeInUp 1s ease;
+      position: relative;
+    }
+
+    .team h3::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa, #dc2626);
+      border-radius: 2px;
+      box-shadow: 0 0 25px rgba(59, 130, 246, 0.6);
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .member {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.18) 0%, rgba(37, 99, 235, 0.18) 50%, rgba(220, 38, 38, 0.18) 100%);
+      border: 2px solid rgba(59, 130, 246, 0.4);
+      padding: 45px 40px;
+      border-radius: 20px;
+      transition: all 0.4s ease;
+      backdrop-filter: blur(15px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .member::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa, #dc2626);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .member::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: all 0.5s ease;
+      border-radius: 50%;
+    }
+
+    .member:hover::before {
+      transform: scaleX(1);
+    }
+
+    .member:hover::after {
+      width: 200px;
+      height: 200px;
+    }
+
+    .member:hover {
+      transform: translateY(-10px) scale(1.05);
+      border-color: rgba(59, 130, 246, 0.7);
+      box-shadow: 
+        0 20px 60px rgba(59, 130, 246, 0.35),
+        0 10px 30px rgba(220, 38, 38, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(37, 99, 235, 0.3) 50%, rgba(220, 38, 38, 0.3) 100%);
+    }
+
+    .member h4 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 50%, #fca5a5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+      position: relative;
+      z-index: 1;
+      text-transform: uppercase;
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      background-color: #050505;
+      text-align: center;
+      padding: 30px 8%;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.95rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* ---------- ANIMATIONS ---------- */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 768px) {
+      .hero h2 {
+        font-size: 2.5rem;
+      }
+
+      .mission-section h3,
+      .how-it-works h3,
+      .team h3 {
+        font-size: 2.5rem;
+      }
+
+      .values-grid,
+      .team-grid {
+        flex-direction: column;
+      }
+
+      .value-card {
+        max-width: 100%;
+      }
+
+      header {
+        padding: 12px 5%;
+      }
+
+      header.scrolled {
+        padding: 10px 5%;
+      }
+
+      header h1 {
+        font-size: 1.1rem;
+      }
+
+      nav {
+        gap: 6px;
+      }
+
+      nav a {
+        font-size: 0.75rem;
+      }
+
+      .signin-btn {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+      }
+
+      .return-home {
+        padding: 10px 18px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header id="header">
+    <h1>ECHOSENSE AI</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="#" class="signin-btn">Sign In</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h2>About ECHOSENSE AI</h2>
+      <p>Enhancing communication quality and performance through AI-driven insights and automation.</p>
+    </div>
+  </section>
+
+  <section class="mission-section">
+    <h3>Our Mission</h3>
+    <p>ECHOSENSE AI is built to revolutionize the way organizations manage, analyze, and optimize their voice interactions. We aim to make business communication smarter, faster, and more empathetic — powered by artificial intelligence.</p>
+    <p>Our platform bridges the gap between technology and human connection, ensuring every conversation delivers value, builds trust, and drives meaningful outcomes.</p>
+  </section>
+
+  <section class="how-it-works">
+    <h3>How It Works</h3>
+    <p>Using advanced AI algorithms, the platform automatically records calls, transcribes audio into text, detects emotions, and extracts actionable insights. This helps teams improve customer satisfaction, ensure compliance, and drive better decisions through real-time analytics.</p>
+    <p>From sentiment analysis to keyword tracking, our intelligent system processes thousands of conversations per day, delivering clarity and precision that transforms how businesses understand their customers.</p>
+
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Innovation">
+        </div>
+        <h4>Innovation First</h4>
+        <p>We continuously enhance our algorithms and features to provide accurate and efficient call monitoring solutions.</p>
+      </div>
+
+      <div class="value-card">
+        <div class="value-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/4149/4149686.png" alt="Security">
+        </div>
+        <h4>Data Security</h4>
+        <p>Your privacy matters. All data is securely stored and processed under enterprise-grade encryption and compliance standards.</p>
+      </div>
+
+      <div class="value-card">
+        <div class="value-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/1484/1484794.png" alt="Efficiency">
+        </div>
+        <h4>Efficiency & Insights</h4>
+        <p>Our dashboard helps teams make informed decisions with sentiment tracking, keyword trends, and agent analytics.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="team">
+    <h3>Meet the Team</h3>
+    <div class="team-grid">
+      <div class="member">
+        <h4>Siddharth</h4>
+      </div>
+      <div class="member">
+        <h4>Tanishq</h4>
+      </div>
+      <div class="member">
+        <h4>Sudhanshu</h4>
+      </div>
+      <div class="member">
+        <h4>Raushan</h4>
+      </div>
+    </div>
+  </section>
+
+  <section class="return-home-section">
+    <a href="index.html" class="return-home">
+      <span>←</span>
+      Return to Home
+    </a>
+  </section>
+
+  <footer>
+    © 2025 ECHOSENSE AI | All Rights Reserved | Designed by Siddharth, Tanishq, Sudhanshu & Raushan
+  </footer>
+
+  <script>
+    // Header scroll effect
+    const header = document.getElementById("header");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 50) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    });
+  </script>
+
+</body>
+</html>
