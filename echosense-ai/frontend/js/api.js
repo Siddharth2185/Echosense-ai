@@ -135,6 +135,50 @@ class EchosenseAPI {
   }
 
   /**
+   * Delete a call and all related data
+   * @param {string} callId - Call ID to delete
+   * @returns {Promise<Object>} Deletion result
+   */
+  async deleteCall(callId) {
+    return this._fetch(`/api/calls/${callId}`, {
+      method: 'DELETE'
+    });
+  }
+
+  /**
+   * Force re-process a call (reset + requeue)
+   * @param {string} callId - Call ID to reprocess
+   * @returns {Promise<Object>} Reprocess result
+   */
+  async reprocessCall(callId) {
+    return this._fetch(`/api/processing/reprocess/${callId}`, {
+      method: 'POST'
+    });
+  }
+
+  /**
+   * Add a review / training comment to a call
+   * @param {string} callId - Call ID
+   * @param {Object} data - { reviewer_name, category, comment, score_override }
+   * @returns {Promise<Object>} Created review comment
+   */
+  async addReviewComment(callId, data) {
+    return this._fetch(`/api/processing/review/${callId}`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+
+  /**
+   * Get all review / training comments for a call
+   * @param {string} callId - Call ID
+   * @returns {Promise<Object>} Review comments
+   */
+  async getReviewComments(callId) {
+    return this._fetch(`/api/processing/reviews/${callId}`);
+  }
+
+  /**
    * Get compliance summary
    * @param {number} days - Number of days (default: 7)
    * @returns {Promise<Object>} Compliance summary

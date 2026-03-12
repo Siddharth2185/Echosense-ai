@@ -54,15 +54,22 @@ async def get_dashboard_stats(
         ComplianceFlag.severity.in_(["high", "critical"])
     ).scalar()
     
-    # Average processing time
-    avg_processing_time = db.query(
-        func.avg(
-            func.extract('epoch', Call.processed_at - Call.uploaded_at)
-        )
-    ).filter(
+    # Average processing time (calculated in Python — SQLite doesn't support EXTRACT)
+    completed_calls = db.query(Call).filter(
         Call.uploaded_at >= since_date,
-        Call.status == ProcessingStatus.COMPLETED
-    ).scalar()
+        Call.status == ProcessingStatus.COMPLETED,
+        Call.processed_at.isnot(None)
+    ).all()
+    
+    avg_processing_time = None
+    if completed_calls:
+        durations = [
+            (c.processed_at - c.uploaded_at).total_seconds()
+            for c in completed_calls
+            if c.processed_at and c.uploaded_at
+        ]
+        if durations:
+            avg_processing_time = sum(durations) / len(durations)
     
     return {
         "period_days": days,

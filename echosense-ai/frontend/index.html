@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECHOSENSE AI - Premium Edition</title>
-  
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
@@ -40,7 +41,10 @@
     body::before {
       content: "";
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: #0a0a0a;
       z-index: -101;
     }
@@ -160,7 +164,7 @@
       padding: 120px 8% 80px;
       position: relative;
       overflow: hidden;
-      background: transparent; 
+      background: transparent;
     }
 
     .hero::before {
@@ -171,9 +175,9 @@
       right: 0;
       bottom: 0;
       background:
-          radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.15) 0%, transparent 60%),
-          radial-gradient(circle at 80% 70%, rgba(0, 119, 255, 0.15) 0%, transparent 60%),
-          radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 100%);
+        radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at 80% 70%, rgba(0, 119, 255, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 100%);
       z-index: 1;
       filter: blur(20px);
     }
@@ -181,9 +185,12 @@
     .hero::after {
       content: "";
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
       background-size: 50px 50px;
       z-index: 1;
       pointer-events: none;
@@ -428,9 +435,11 @@
     .creator::before {
       content: '';
       position: absolute;
-      width: 300px; height: 300px;
+      width: 300px;
+      height: 300px;
       background: radial-gradient(circle, rgba(0, 119, 255, 0.2) 0%, transparent 70%);
-      top: -50px; left: -50px;
+      top: -50px;
+      left: -50px;
       z-index: 0;
       filter: blur(40px);
     }
@@ -438,9 +447,11 @@
     .creator::after {
       content: '';
       position: absolute;
-      width: 300px; height: 300px;
+      width: 300px;
+      height: 300px;
       background: radial-gradient(circle, rgba(239, 68, 68, 0.2) 0%, transparent 70%);
-      bottom: -50px; right: -50px;
+      bottom: -50px;
+      right: -50px;
       z-index: 0;
       filter: blur(40px);
     }
@@ -552,14 +563,16 @@
       border-radius: 8px;
       transition: all 0.3s ease;
       font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.7); /* Standard icon color */
+      color: rgba(255, 255, 255, 0.7);
+      /* Standard icon color */
     }
 
     .social-links a:hover {
       background: linear-gradient(135deg, #0077ff 0%, #00d4ff 100%);
       border-color: transparent;
       transform: translateY(-3px);
-      color: #ffffff; /* Icon becomes white on hover */
+      color: #ffffff;
+      /* Icon becomes white on hover */
     }
 
     .footer-bottom {
@@ -673,6 +686,7 @@
         opacity: 0;
         transform: translateY(30px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -684,9 +698,11 @@
         opacity: 0;
         transform: scale(0.5);
       }
+
       50% {
         transform: scale(1.1);
       }
+
       100% {
         opacity: 1;
         transform: scale(1);
@@ -713,21 +729,29 @@
     }
   </style>
 </head>
+
 <body>
 
   <video autoplay muted loop playsinline id="bg-video">
-      <source src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" type="video/mp4">
-      Your browser does not support HTML5 video.
+    <source src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
   </video>
 
   <header id="header">
-    <h1>ECHOSENSE AI</h1>
+    <h1><a href="index.html" style="text-decoration:none;background:linear-gradient(135deg,#0077ff 0%,#00d4ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;">ECHOSENSE AI</a></h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
       <a href="#" class="login-btn">Login</a>
-      <a href="#" class="signin-btn">Sign In</a>
+      <a href="#" class="signin-btn">Sign Up</a>
+      <span id="user-info" style="display:none;align-items:center;gap:10px;">
+        <span id="user-greeting" style="color:rgba(255,255,255,0.85);font-size:0.92rem;font-weight:500;"></span>
+        <a href="#" id="logout-btn"
+          style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.75);padding:6px 16px;border-radius:8px;font-size:0.88rem;font-weight:500;transition:all 0.3s ease;text-decoration:none;"
+          onmouseover="this.style.background='rgba(239,68,68,0.15)';this.style.borderColor='rgba(239,68,68,0.4)';this.style.color='#ef4444'"
+          onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='rgba(255,255,255,0.75)'">Logout</a>
+      </span>
     </nav>
   </header>
 
@@ -739,71 +763,88 @@
     </div>
   </section>
 
-  <section class="about" id="about">
-    <div class="about-container">
-      <h2>About Our ECHOSENSE AI</h2>
-      <p>Our platform uses advanced artificial intelligence to streamline customer interaction monitoring. It helps organizations ensure high-quality communication, compliance, and performance by transcribing, analyzing, and summarizing calls in real-time. Whether you're running a customer support team or managing sales calls, our AI makes it effortless to stay informed and efficient.</p>
-    </div>
-  </section>
+
 
   <section id="features">
     <h2 class="section-title">Key Features</h2>
     <div class="features-grid">
       <div class="feature-card">
-        <img src="https://sourcemediakw.com/wp-content/uploads/2023/04/%D8%A3%D9%81%D8%B6%D9%84-%D8%AA%D8%B7%D8%A8%D9%8A%D9%82%D8%A7%D8%AA-%D8%AA%D8%B3%D8%AC%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D9%83%D8%A7%D9%84%D9%85%D8%A7%D8%AA-e1680787110807.jpg" alt="Call Recording" class="feature-card-image">
+        <img
+          src="assets/call_recording.png"
+          alt="Call Recording" class="feature-card-image">
         <div class="feature-icon">📞</div>
         <h3>Call Recording</h3>
         <p>Securely record phone calls for future reference and analysis, ensuring data privacy and compliance.</p>
       </div>
       <div class="feature-card">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR93BA8vZVs1S9P4iVg0nj4D893dYmJFdvvig&s" alt="Speech to Text" class="feature-card-image">
+        <img src="assets/speech_to_text.png"
+          alt="Speech to Text" class="feature-card-image">
         <div class="feature-icon">🎤</div>
         <h3>Speech-to-Text</h3>
         <p>Transcribe call recordings into accurate text format using AI-driven voice recognition technology.</p>
       </div>
       <div class="feature-card">
-        <img src="https://images.pexels.com/photos/905163/pexels-photo-905163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Sentiment Analysis" class="feature-card-image">
+        <img
+          src="assets/sentiment_analysis.png"
+          alt="Sentiment Analysis" class="feature-card-image">
         <div class="feature-icon">😊</div>
         <h3>Sentiment Analysis</h3>
         <p>Analyze caller sentiment and tone to measure satisfaction, engagement, and agent performance.</p>
       </div>
       <div class="feature-card">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPXBsYR-f9RxU6uz9_0rrQ8uoa7zEB6kfc5g&s" alt="Keyword Extraction" class="feature-card-image">
+        <img src="assets/keyword_extraction.png"
+          alt="Keyword Extraction" class="feature-card-image">
         <div class="feature-icon">🔍</div>
         <h3>Keyword Extraction</h3>
         <p>Automatically identify key topics, phrases, and product mentions discussed during each conversation.</p>
       </div>
       <div class="feature-card">
-        <img src="https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Reporting Dashboard" class="feature-card-image">
+        <img
+          src="assets/reporting_dashboard.png"
+          alt="Reporting Dashboard" class="feature-card-image">
         <div class="feature-icon">📊</div>
         <h3>Reporting Dashboard</h3>
-        <p>Visualize insights on call metrics, sentiment trends, and performance with interactive charts and reports.</p>
+        <p>Visualize insights on call metrics, sentiment trends, and performance with interactive charts and reports.
+        </p>
       </div>
       <div class="feature-card">
-        <img src="https://www.goanywhere.com/sites/default/files/styles/og_image/public/goanywhere/ga-the-data-security-lifecycle-blog-850x330.jpg.webp?itok=vL8t-n_n" alt="Data Security" class="feature-card-image">
+        <img
+          src="assets/data_security.png"
+          alt="Data Security" class="feature-card-image">
         <div class="feature-icon">🔒</div>
         <h3>Data Security</h3>
-        <p>All data is encrypted and processed under strict security protocols to ensure compliance with industry standards like GDPR and ISO 27001.</p>
+        <p>All data is encrypted and processed under strict security protocols to ensure compliance with industry
+          standards like GDPR and ISO 27001.</p>
       </div>
     </div>
   </section>
 
   <section class="showcase">
-    <img src="https://media.licdn.com/dms/image/v2/C4E12AQHr2dkud3ASSw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1589489540806?e=2147483647&v=beta&t=sr8Jkpbr0lFfBBj2pNpbLjZVueZ6ZK9ltsJAAdmPY1k" alt="AI Dashboard Analysis" class="showcase-image">
-    <p>ECHOSENSE AI bridges the communication gap — ensuring every conversation, from customer support to sales, is optimized for clarity, compliance, and empathy. Visualize real interactions and gain powerful insights through intelligent AI analysis.</p>
+    <img
+      src="assets/communication_gap.png"
+      alt="AI Communication Bridge" class="showcase-image">
+    <p>ECHOSENSE AI bridges the communication gap — ensuring every conversation, from customer support to sales, is
+      optimized for clarity, compliance, and empathy. Visualize real interactions and gain powerful insights through
+      intelligent AI analysis.</p>
   </section>
 
   <section id="about-2">
     <div class="about-container">
       <h2>About Our ECHOSENSE AI</h2>
-      <p>Our platform uses advanced artificial intelligence to streamline customer interaction monitoring. It helps organizations ensure high-quality communication, compliance, and performance by transcribing, analyzing, and summarizing calls in real-time. Whether you're running a customer support team or managing sales calls, our AI makes it effortless to stay informed and efficient.</p>
+      <p>Our platform uses advanced artificial intelligence to streamline customer interaction monitoring. It helps
+        organizations ensure high-quality communication, compliance, and performance by transcribing, analyzing, and
+        summarizing calls in real-time. Whether you're running a customer support team or managing sales calls, our AI
+        makes it effortless to stay informed and efficient.</p>
     </div>
   </section>
 
   <section class="creator" id="contact">
     <h2>About the Creator</h2>
-    <p>Created with passion by <strong>Siddharth, Tanishq, Sudhanshu and Raushan</strong> — web developers and AI enthusiasts who believe in merging technology with human communication. Dedicated to creating intelligent, user-friendly digital experiences.</p>
-    <p>Connect on <a href="https://linkedin.com" target="_blank">LinkedIn</a> or <a href="mailto:creator@example.com">Email</a>.</p>
+    <p>Created with passion by <strong>Siddharth, Tanishq and Raushan</strong> — web developers and AI
+      enthusiasts who believe in merging technology with human communication. Dedicated to creating intelligent,
+      user-friendly digital experiences.</p>
+    <p>Connect on <a href="https://linkedin.com" target="_blank">LinkedIn</a> or <a
+        href="mailto:creator@example.com">Email</a>.</p>
   </section>
 
   <footer>
@@ -812,10 +853,14 @@
         <h3>ECHOSENSE AI</h3>
         <p>Transforming customer conversations into actionable insights with cutting-edge AI technology.</p>
         <div class="social-links">
-          <a href="https://www.linkedin.com/in/echosense-ai-a2706b393/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-          <a href="https://x.com/EchosenseAi?t=B8bKxnfnI-H5IxEgK8QzTA&s=09" target="_blank" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
-          <a href="https://www.facebook.com/profile.php?id=61584231732102" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="https://www.instagram.com/echosense.ai/?igsh=MXJrOWtmMDJmeTExbA%3D%3D#" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.linkedin.com/in/echosense-ai-a2706b393/" target="_blank" aria-label="LinkedIn"><i
+              class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://x.com/EchosenseAi?t=B8bKxnfnI-H5IxEgK8QzTA&s=09" target="_blank" aria-label="Twitter"><i
+              class="fa-brands fa-twitter"></i></a>
+          <a href="https://www.facebook.com/profile.php?id=61584231732102" target="_blank" aria-label="Facebook"><i
+              class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/echosense.ai/?igsh=MXJrOWtmMDJmeTExbA%3D%3D#" target="_blank"
+            aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
         </div>
       </div>
 
@@ -844,7 +889,7 @@
     </div>
 
     <div class="footer-bottom">
-      <p>© 2025 ECHOSENSE AI | All Rights Reserved | Designed by Siddharth, Tanishq, Sudhanshu & Raushan</p>
+      <p>© 2025 ECHOSENSE AI | All Rights Reserved | Designed by Siddharth, Tanishq & Raushan</p>
     </div>
   </footer>
 
@@ -932,22 +977,90 @@
       }
     });
 
-    document.getElementById("signupForm").addEventListener("submit", function (e) {
+    document.getElementById("signupForm").addEventListener("submit", async function (e) {
       e.preventDefault();
-      const email = document.getElementById("signupEmail").value;
-      alert(`Account created for: ${email}`);
-      signupModal.style.display = "none";
-      this.reset();
+      const btn = this.querySelector("button");
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value;
+      const confirm = document.getElementById("signupConfirmPassword").value;
+
+      if (password !== confirm) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      btn.textContent = "Creating account…";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch("http://localhost:8000/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          alert("Sign up failed: " + (data.detail || "Unknown error"));
+        } else {
+          alert("Account created successfully! You can now log in.");
+          signupModal.style.display = "none";
+          this.reset();
+        }
+      } catch (err) {
+        alert("Could not reach the server. Make sure the backend is running.");
+      } finally {
+        btn.textContent = "Sign Up";
+        btn.disabled = false;
+      }
     });
 
-    document.getElementById("loginForm").addEventListener("submit", function (e) {
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
       e.preventDefault();
-      const email = document.getElementById("loginEmail").value;
-      alert(`Signed in as: ${email}`);
-      loginModal.style.display = "none";
-      this.reset();
+      const btn = this.querySelector("button");
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value;
+
+      btn.textContent = "Signing in…";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch("http://localhost:8000/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          alert("Login failed: " + (data.detail || "Invalid credentials"));
+        } else {
+          // Hide auth buttons, show user info
+          document.querySelector(".login-btn").style.display = "none";
+          document.querySelector(".signin-btn").style.display = "none";
+          const userInfo = document.getElementById("user-info");
+          userInfo.style.display = "flex";
+          document.getElementById("user-greeting").textContent = "\uD83D\uDC64 " + data.name;
+          loginModal.style.display = "none";
+          this.reset();
+        }
+      } catch (err) {
+        alert("Could not reach the server. Make sure the backend is running.");
+      } finally {
+        btn.textContent = "Login";
+        btn.disabled = false;
+      }
+    });
+
+    // Logout
+    document.getElementById("logout-btn").addEventListener("click", function (e) {
+      e.preventDefault();
+      document.querySelector(".login-btn").style.display = "";
+      document.querySelector(".signin-btn").style.display = "";
+      document.getElementById("user-info").style.display = "none";
+      document.getElementById("user-greeting").textContent = "";
     });
   </script>
 
 </body>
+
 </html>

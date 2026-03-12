@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite3
+
+# Storage/uploads
+storage/
+echosense-ai/backend/storage/
+echosense-ai/storage/
+
+# Test files
+test.mp3
+test_upload.py
+check_db.py
+fix_upload.py
+trigger_process.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

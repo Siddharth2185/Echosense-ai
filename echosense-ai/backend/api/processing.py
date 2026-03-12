@@ -1,13 +1,14 @@
 """
 Processing status and results API endpoints
 """
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from typing import Optional
 from uuid import UUID
+from pydantic import BaseModel
 
 from database.connection import get_db
-from models import Call, Transcript, QualityScore, ComplianceFlag
+from models import Call, Transcript, QualityScore, ComplianceFlag, ReviewComment, ProcessingStatus
 
 router = APIRouter()
 
@@ -144,6 +145,11 @@ async def get_full_report(
         ComplianceFlag.call_id == call_id
     ).all()
     
+    # Get review comments
+    reviews = db.query(ReviewComment).filter(
+        ReviewComment.call_id == call_id
+    ).order_by(ReviewComment.created_at).all()
+    
     return {
         "call_info": {
             "call_id": str(call.id),
@@ -181,5 +187,119 @@ async def get_full_report(
                 "timestamp": f.timestamp
             }
             for f in flags
+        ],
+        "review_comments": [
+            {
+                "id": str(r.id),
+                "reviewer_name": r.reviewer_name,
+                "category": r.category,
+                "comment": r.comment,
+                "score_override": r.score_override,
+                "created_at": r.created_at
+            }
+            for r in reviews
+        ]
+    }
+
+@router.post("/reprocess/{call_id}")
+async def reprocess_call(
+    call_id: UUID,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db)
+):
+    """Force re-process a call — resets status and re-queues processing."""
+    call = db.query(Call).filter(Call.id == call_id).first()
+
+    if not call:
+        raise HTTPException(status_code=404, detail="Call not found")
+
+    # Delete existing transcript data so it can be re-generated cleanly
+    db.query(Transcript).filter(Transcript.call_id == call_id).delete()
+    db.query(QualityScore).filter(QualityScore.call_id == call_id).delete()
+    db.query(ComplianceFlag).filter(ComplianceFlag.call_id == call_id).delete()
+
+    call.status = ProcessingStatus.UPLOADED
+    call.error_message = None
+    call.processed_at = None
+    db.commit()
+
+    from services.call_processor import processor
+    background_tasks.add_task(processor.process_call, str(call_id))
+
+    return {
+        "call_id": str(call_id),
+        "message": "Call queued for re-processing.",
+        "status": "uploaded"
+    }
+
+
+# ── Pydantic schema for review comment creation ──
+class ReviewCommentCreate(BaseModel):
+    reviewer_name: str = "Reviewer"
+    category: str = "general"
+    comment: str
+    score_override: Optional[float] = None
+
+
+@router.post("/review/{call_id}")
+async def add_review_comment(
+    call_id: UUID,
+    body: ReviewCommentCreate,
+    db: Session = Depends(get_db)
+):
+    """Add a training / review comment to a call"""
+    call = db.query(Call).filter(Call.id == call_id).first()
+    if not call:
+        raise HTTPException(status_code=404, detail="Call not found")
+
+    review = ReviewComment(
+        call_id=call_id,
+        reviewer_name=body.reviewer_name,
+        category=body.category,
+        comment=body.comment,
+        score_override=body.score_override
+    )
+    db.add(review)
+    db.commit()
+    db.refresh(review)
+
+    return {
+        "id": str(review.id),
+        "call_id": str(call_id),
+        "reviewer_name": review.reviewer_name,
+        "category": review.category,
+        "comment": review.comment,
+        "score_override": review.score_override,
+        "created_at": review.created_at
+    }
+
+
+@router.get("/reviews/{call_id}")
+async def get_review_comments(
+    call_id: UUID,
+    db: Session = Depends(get_db)
+):
+    """Get all review / training comments for a call"""
+    call = db.query(Call).filter(Call.id == call_id).first()
+    if not call:
+        raise HTTPException(status_code=404, detail="Call not found")
+
+    reviews = db.query(ReviewComment).filter(
+        ReviewComment.call_id == call_id
+    ).order_by(ReviewComment.created_at).all()
+
+    return {
+        "call_id": str(call_id),
+        "total": len(reviews),
+        "reviews": [
+            {
+                "id": str(r.id),
+                "reviewer_name": r.reviewer_name,
+                "category": r.category,
+                "comment": r.comment,
+                "score_override": r.score_override,
+                "created_at": r.created_at
+            }
+            for r in reviews
         ]
     }

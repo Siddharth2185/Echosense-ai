@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,7 +29,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-image: 
+      background-image:
         radial-gradient(circle at 20% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
         radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
         radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 60%);
@@ -113,7 +114,7 @@
       padding: 140px 8% 80px;
       position: relative;
       overflow: hidden;
-      background: 
+      background:
         radial-gradient(circle at 30% 40%, rgba(236, 72, 153, 0.2) 0%, transparent 50%),
         radial-gradient(circle at 70% 60%, rgba(59, 130, 246, 0.2) 0%, transparent 50%);
     }
@@ -125,7 +126,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: 
+      background:
         radial-gradient(circle at 20% 30%, rgba(236, 72, 153, 0.25) 0%, transparent 50%),
         radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.25) 0%, transparent 50%);
       z-index: 0;
@@ -139,7 +140,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: 
+      background-image:
         linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
       background-size: 50px 50px;
@@ -182,7 +183,7 @@
     .features-section {
       padding: 100px 8%;
       position: relative;
-      background: 
+      background:
         radial-gradient(circle at 10% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
         radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
     }
@@ -210,7 +211,7 @@
 
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 25px;
       margin-top: 60px;
     }
@@ -350,6 +351,7 @@
         opacity: 0;
         transform: translateY(30px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -380,10 +382,11 @@
     }
   </style>
 </head>
+
 <body>
 
   <header id="header">
-    <h1>ECHOSENSE AI</h1>
+    <h1><a href="index.html" style="text-decoration:none;background:linear-gradient(135deg,#0077ff 0%,#00d4ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;">ECHOSENSE AI</a></h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="index.html#features">Features</a>
@@ -395,52 +398,71 @@
   <section class="hero">
     <div class="hero-content">
       <h2>Advanced AI Call Monitoring Tools</h2>
-      <p>Explore powerful tools that enhance your business communication with real-time intelligence, performance insights, and learning-based improvements.</p>
+      <p>Explore powerful tools that enhance your business communication with real-time intelligence, performance
+        insights, and learning-based improvements.</p>
     </div>
   </section>
 
   <section class="features-section">
     <h2 class="section-title">Powerful Monitoring Solutions</h2>
-    <p class="section-subtitle">Transform your call analytics workflow with cutting-edge AI-powered features designed for modern businesses.</p>
+    <p class="section-subtitle">Transform your call analytics workflow with cutting-edge AI-powered features designed
+      for modern businesses.</p>
 
     <div class="features-grid">
-      <div class="feature-card">
-        <img src="https://images.pexels.com/photos/8867430/pexels-photo-8867430.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Live Call Analysis" class="feature-card-image">
-        <div class="feature-card-content">
-          <div class="feature-icon">📊</div>
-          <h3>Live Call Analysis</h3>
-          <p>Analyze ongoing calls in real-time using AI-driven metrics for tone, keywords, and sentiment to guide agents toward better performance instantly.</p>
-          <a href="live-analysis.html" class="go-btn">Explore Feature</a>
-        </div>
-      </div>
+
 
       <div class="feature-card">
-        <img src="https://images.pexels.com/photos/7988089/pexels-photo-7988089.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Recording Analysis & Upload" class="feature-card-image">
+        <img src="https://images.pexels.com/photos/7988089/pexels-photo-7988089.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Recording Analysis & Upload" class="feature-card-image">
         <div class="feature-card-content">
           <div class="feature-icon">🎙️</div>
           <h3>Recording Analysis & Upload</h3>
-          <p>Upload or automatically record calls to analyze customer sentiment, compliance, and communication patterns for each interaction.</p>
-          <a href="recording-analysis.html" class="go-btn">Explore Feature</a>
+          <p>Upload audio files to analyze customer sentiment, compliance, and communication patterns for each
+            interaction.</p>
+          <a href="upload.html" class="go-btn">Upload Audio</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <img src="https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Previous Analysis Feedback" class="feature-card-image">
+        <img src="https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Previous Analysis Feedback" class="feature-card-image">
         <div class="feature-card-content">
           <div class="feature-icon">📈</div>
           <h3>Previous Analysis Feedback</h3>
-          <p>Review insights from past conversations and identify recurring trends, issues, or improvements to optimize your team's communication strategy.</p>
-          <a href="previous-feedback.html" class="go-btn">Explore Feature</a>
+          <p>Review insights from past conversations and identify recurring trends, issues, or improvements to optimize
+            your team's communication strategy.</p>
+          <a href="dashboard.html" class="go-btn">View Dashboard</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <img src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Training Based on Previous Analysis" class="feature-card-image">
+        <img src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Training Based on Previous Analysis" class="feature-card-image">
         <div class="feature-card-content">
           <div class="feature-icon">🎓</div>
           <h3>Training Based on Previous Analysis</h3>
-          <p>Empower your workforce with customized training sessions generated from past performance and AI-driven feedback models for continuous improvement.</p>
-          <a href="training-analysis.html" class="go-btn">Explore Feature</a>
+          <p>Empower your workforce with customized training sessions generated from past performance and AI-driven
+            feedback models for continuous improvement.</p>
+          <a href="training.html" class="go-btn">View Training</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section" style="padding-top: 0;">
+    <h2 class="section-title">Future Work</h2>
+    <p class="section-subtitle">Exciting new capabilities currently in development.</p>
+
+    <div class="features-grid" style="grid-template-columns: repeat(1, max-content); justify-content: center;">
+      <div class="feature-card" style="max-width: 350px;">
+        <img src="https://images.pexels.com/photos/8867430/pexels-photo-8867430.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Live Call Analysis" class="feature-card-image">
+        <div class="feature-card-content">
+          <div class="feature-icon">📊</div>
+          <h3>Live Call Analysis</h3>
+          <p>Analyze ongoing calls in real-time using AI-driven metrics for tone, keywords, and sentiment to guide
+            agents toward better performance instantly.</p>
+          <a href="live-analysis.html" class="go-btn" style="pointer-events: none; opacity: 0.7;">Coming Soon</a>
         </div>
       </div>
     </div>
@@ -467,4 +489,5 @@
   </script>
 
 </body>
+
 </html>

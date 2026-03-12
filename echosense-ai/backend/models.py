@@ -1,8 +1,7 @@
 """
 SQLAlchemy ORM models for Echosense AI
 """
-from sqlalchemy import Column, String, Integer, Float, DateTime, Text, ForeignKey, Enum
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, Integer, Float, DateTime, Text, ForeignKey, Enum, Uuid
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -34,7 +33,7 @@ class Call(Base):
     """Call recording metadata"""
     __tablename__ = "calls"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
     audio_url = Column(Text, nullable=False)
     filename = Column(String(255), nullable=False)
     duration = Column(Integer)  # Duration in seconds
@@ -47,14 +46,15 @@ class Call(Base):
     transcripts = relationship("Transcript", back_populates="call", cascade="all, delete-orphan")
     quality_score = relationship("QualityScore", back_populates="call", uselist=False, cascade="all, delete-orphan")
     compliance_flags = relationship("ComplianceFlag", back_populates="call", cascade="all, delete-orphan")
+    review_comments = relationship("ReviewComment", back_populates="call", cascade="all, delete-orphan")
 
 
 class Transcript(Base):
     """Transcript segments with speaker diarization"""
     __tablename__ = "transcripts"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    call_id = Column(UUID(as_uuid=True), ForeignKey("calls.id"), nullable=False)
+    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    call_id = Column(Uuid(as_uuid=True), ForeignKey("calls.id"), nullable=False)
     speaker = Column(String(20), nullable=False)  # "Agent" or "Customer"
     text = Column(Text, nullable=False)
     start_time = Column(Float, nullable=False)  # Timestamp in seconds
@@ -70,8 +70,8 @@ class QualityScore(Base):
     """Overall quality metrics for a call"""
     __tablename__ = "quality_scores"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    call_id = Column(UUID(as_uuid=True), ForeignKey("calls.id"), nullable=False, unique=True)
+    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    call_id = Column(Uuid(as_uuid=True), ForeignKey("calls.id"), nullable=False, unique=True)
     
     # Overall score (0-100)
     overall_score = Column(Float, nullable=False)
@@ -98,8 +98,8 @@ class ComplianceFlag(Base):
     """Compliance violations and important events"""
     __tablename__ = "compliance_flags"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    call_id = Column(UUID(as_uuid=True), ForeignKey("calls.id"), nullable=False)
+    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    call_id = Column(Uuid(as_uuid=True), ForeignKey("calls.id"), nullable=False)
     
     flag_type = Column(String(50), nullable=False)  # e.g., "missed_script", "policy_violation"
     description = Column(Text, nullable=False)
@@ -112,11 +112,40 @@ class ComplianceFlag(Base):
     call = relationship("Call", back_populates="compliance_flags")
 
 
+class ReviewComment(Base):
+    """Reviewer comments and training feedback on calls"""
+    __tablename__ = "review_comments"
+
+    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    call_id = Column(Uuid(as_uuid=True), ForeignKey("calls.id"), nullable=False)
+
+    reviewer_name = Column(String(100), nullable=False, default="Reviewer")
+    category = Column(String(50), nullable=False)       # e.g. "general", "politeness", "empathy", "clarity", "resolution"
+    comment = Column(Text, nullable=False)
+    score_override = Column(Float, nullable=True)        # Optional: reviewer can override a specific score (0-100)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationships
+    call = relationship("Call", back_populates="review_comments")
+
+
+class User(Base):
+    """User accounts for login/signup"""
+    __tablename__ = "users"
+
+    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String(100), nullable=False)
+    email = Column(String(255), unique=True, nullable=False, index=True)
+    hashed_password = Column(String(255), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
 class Agent(Base):
     """Agent information for performance tracking"""
     __tablename__ = "agents"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String(100), nullable=False)
     email = Column(String(255), unique=True, nullable=False)
     employee_id = Column(String(50), unique=True, nullable=True)

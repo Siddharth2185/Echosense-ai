@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard | ECHOSENSE AI</title>
-  
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
@@ -62,7 +63,8 @@
       transition: color 0.3s ease;
     }
 
-    nav a:hover, nav a.active {
+    nav a:hover,
+    nav a.active {
       color: #0077ff;
     }
 
@@ -285,8 +287,13 @@
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
 
     /* Error */
@@ -313,15 +320,75 @@
         padding: 100px 5% 40px;
       }
     }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      position: relative;
+      background: linear-gradient(135deg, rgba(30, 30, 30, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
   </style>
 </head>
+
 <body>
 
   <header>
-    <h1>ECHOSENSE AI</h1>
+    <h1><a href="index.html" style="text-decoration:none;background:linear-gradient(135deg,#0077ff 0%,#00d4ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;">ECHOSENSE AI</a></h1>
     <nav>
       <a href="dashboard.html" class="active">Dashboard</a>
       <a href="upload.html">Upload</a>
+      <a href="training.html">Training</a>
       <a href="index.html">Home</a>
     </nav>
   </header>
@@ -381,6 +448,33 @@
     </div>
   </main>
 
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteModal" class="modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeDeleteModal()"></div>
+    <div class="modal-content">
+      <h3 style="margin-bottom: 15px; font-size: 1.5rem;">
+        <i class="fas fa-exclamation-triangle" style="color: #ef4444; margin-right: 10px;"></i>
+        Confirm Deletion
+      </h3>
+      <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">
+        Are you sure you want to delete <strong id="deleteFileName"></strong>?
+      </p>
+      <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 25px;">
+        This will permanently remove the call recording, transcript, quality scores, and all related data. This action
+        cannot be undone.
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button onclick="closeDeleteModal()" class="btn" style="background: rgba(255,255,255,0.1);">
+          Cancel
+        </button>
+        <button onclick="deleteCall()" class="btn"
+          style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/api.js"></script>
   <script>
     let qualityChart = null;
@@ -411,7 +505,7 @@
       try {
         const data = await api.getRecentCalls(10);
         const container = document.getElementById('recentCallsContainer');
-        
+
         if (data.calls && data.calls.length > 0) {
           const tableHTML = `
             <table>
@@ -427,14 +521,22 @@
               </thead>
               <tbody>
                 ${data.calls.map(call => `
-                  <tr>
+                  <tr data-call-id="${call.call_id}">
                     <td>${call.filename}</td>
                     <td>${formatDuration(call.duration)}</td>
-                    <td><span class="status-badge status-${call.status}">${call.status}</span></td>
+                    <td>
+                      <span class="status-badge status-${call.status}">
+                        ${call.status === 'processing' ? '<i class="fas fa-spinner fa-spin" style="margin-right: 5px;"></i>' : ''}
+                        ${call.status}
+                      </span>
+                    </td>
                     <td>${call.overall_score ? `<span class="score ${getScoreClass(call.overall_score)}">${call.overall_score.toFixed(1)}</span>` : 'N/A'}</td>
                     <td>${formatDate(call.uploaded_at)}</td>
                     <td>
-                      <a href="call-details.html?id=${call.call_id}" class="btn" style="padding: 6px 12px; font-size: 0.8rem;">View Details</a>
+                      <a href="call-details.html?id=${call.call_id}" class="btn" style="padding: 6px 12px; font-size: 0.8rem; margin-right: 8px;">View</a>
+                      <button onclick="confirmDelete('${call.call_id}', '${call.filename}')" class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                        <i class="fas fa-trash"></i>
+                      </button>
                     </td>
                   </tr>
                 `).join('')}
@@ -455,14 +557,14 @@
     async function loadQualityTrends() {
       try {
         const data = await api.getQualityTrends(30);
-        
+
         if (data.trends && data.trends.length > 0) {
           const ctx = document.getElementById('qualityChart').getContext('2d');
-          
+
           if (qualityChart) {
             qualityChart.destroy();
           }
-          
+
           qualityChart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -542,7 +644,55 @@
 
     // Load dashboard on page load
     document.addEventListener('DOMContentLoaded', loadDashboard);
+
+    // Delete functionality
+    let callToDelete = null;
+
+    function confirmDelete(callId, filename) {
+      callToDelete = callId;
+      document.getElementById('deleteFileName').textContent = filename;
+      document.getElementById('deleteModal').style.display = 'flex';
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').style.display = 'none';
+      callToDelete = null;
+    }
+
+    async function deleteCall() {
+      if (!callToDelete) return;
+
+      try {
+        // Show loading state
+        const deleteBtn = event.target.closest('button');
+        const originalContent = deleteBtn.innerHTML;
+        deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+        deleteBtn.disabled = true;
+
+        // Delete the call
+        await api.deleteCall(callToDelete);
+
+        // Remove from table
+        const row = document.querySelector(`tr[data-call-id="${callToDelete}"]`);
+        if (row) {
+          row.style.opacity = '0';
+          row.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => row.remove(), 300);
+        }
+
+        // Close modal
+        closeDeleteModal();
+
+        // Reload dashboard data
+        setTimeout(() => loadDashboard(), 500);
+
+      } catch (error) {
+        alert('Failed to delete call: ' + error.message);
+        closeDeleteModal();
+      }
+    }
   </script>
 
 </body>
+
 </html>

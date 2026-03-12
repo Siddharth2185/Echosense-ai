@@ -247,167 +247,7 @@
       margin-bottom: 5px;
     }
 
-    /* ---------- CONTACT FORM CONTAINER ---------- */
-    .contact-container {
-      max-width: 900px;
-      width: 100%;
-      margin: 0 auto;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 25px;
-      padding: 50px 45px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      position: relative;
-      overflow: hidden;
-      animation: fadeInUp 0.8s ease;
-    }
 
-    .contact-container::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #3b82f6, #60a5fa, #22c55e);
-    }
-
-    .contact-header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .contact-header h2 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin-bottom: 15px;
-      letter-spacing: -1px;
-      background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 70%, #22c55e 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .contact-header p {
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 1.05rem;
-      line-height: 1.7;
-    }
-
-    /* ---------- FORM STYLES ---------- */
-    form {
-      margin-bottom: 30px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 0;
-    }
-
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 0.95rem;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      padding: 14px 18px;
-      margin-bottom: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background-color: rgba(255, 255, 255, 0.05);
-      color: #fff;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-family: "Inter", sans-serif;
-      transition: all 0.3s ease;
-    }
-
-    input:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #3b82f6;
-      background-color: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-
-    button[type="submit"] {
-      width: 100%;
-      background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 60%, #22c55e 100%);
-      color: #fff;
-      border: none;
-      padding: 16px 20px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 1.05rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
-      font-family: "Inter", sans-serif;
-    }
-
-    button[type="submit"]:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 35px rgba(59, 130, 246, 0.6);
-    }
-
-    button[type="submit"]:active {
-      transform: translateY(0);
-    }
-
-    .success-message {
-      display: none;
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
-      border: 1px solid rgba(34, 197, 94, 0.3);
-      color: #4ade80;
-      padding: 14px 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-      text-align: center;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-
-    .success-message.show {
-      display: block;
-      animation: slideDown 0.4s ease;
-    }
-
-    /* ---------- BACK BUTTON ---------- */
-    .back-btn {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.8);
-      padding: 12px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      font-family: "Inter", sans-serif;
-      margin-top: 15px;
-    }
-
-    .back-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-    }
 
     /* ---------- FOOTER ---------- */
     footer {
@@ -485,7 +325,7 @@
   <div class="decorative-icon message-icon">💬</div>
 
   <header id="header">
-    <h1>ECHOSENSE AI</h1>
+    <h1><a href="index.html" style="text-decoration:none;background:linear-gradient(135deg,#3b82f6 0%,#60a5fa 70%,#22c55e 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;">ECHOSENSE AI</a></h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="index.html#about">About</a>
@@ -529,39 +369,7 @@
         </div>
       </div>
 
-      <div class="contact-container">
-        <div class="contact-header">
-          <h2>Send Us a Message</h2>
-          <p>Have a question? Fill out the form below and we'll get back to you within 24 hours.</p>
-        </div>
 
-        <form id="contactForm">
-          <label for="name">Full Name</label>
-          <input type="text" id="name" name="name" placeholder="John Doe" required>
-
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" placeholder="john@example.com" required>
-
-          <label for="phone">Phone Number (Optional)</label>
-          <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000">
-
-          <label for="subject">Subject</label>
-          <input type="text" id="subject" name="subject" placeholder="How can we help?" required>
-
-          <label for="message">Your Message</label>
-          <textarea id="message" name="message" placeholder="Tell us what's on your mind..." required></textarea>
-
-          <button type="submit">Send Message</button>
-          
-          <div class="success-message" id="successMsg">
-            ✅ Thank you! Your message has been sent successfully. Redirecting...
-          </div>
-        </form>
-
-        <button class="back-btn" onclick="window.location.href='index.html'">
-          ← Back to Home
-        </button>
-      </div>
     </div>
   </div>
 
@@ -580,30 +388,7 @@
       }
     });
 
-    // Form submission
-    document.getElementById("contactForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      
-      const successMsg = document.getElementById("successMsg");
-      successMsg.classList.add("show");
 
-      // Simulate redirect after submission
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 2500);
-    });
-
-    // Add input animations
-    const inputs = document.querySelectorAll('input, textarea');
-    inputs.forEach(input => {
-      input.addEventListener('focus', function() {
-        this.parentElement.style.transform = 'translateX(5px)';
-      });
-      
-      input.addEventListener('blur', function() {
-        this.parentElement.style.transform = 'translateX(0)';
-      });
-    });
   </script>
 
 </body>

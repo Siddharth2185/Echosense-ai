@@ -231,6 +231,80 @@
             text-align: center;
         }
 
+        /* Processing Stages */
+        .processing-stages {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .processing-stages.show {
+            display: block;
+        }
+
+        .stage {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 0;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+        }
+
+        .stage.active {
+            opacity: 1;
+        }
+
+        .stage.completed {
+            opacity: 0.7;
+        }
+
+        .stage-icon {
+            font-size: 1.5rem;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .stage.active .stage-icon {
+            color: #0077ff;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .stage.completed .stage-icon {
+            color: #22c55e;
+        }
+
+        .stage-text {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .stage-text .stage-title {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+
+        .stage-text .stage-desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
         /* Success/Error Messages */
         .message {
             padding: 20px;
@@ -320,7 +394,7 @@
 <body>
 
     <header>
-        <h1>ECHOSENSE AI</h1>
+        <h1><a href="index.html" style="text-decoration:none;background:linear-gradient(135deg,#0077ff 0%,#00d4ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;">ECHOSENSE AI</a></h1>
         <nav>
             <a href="dashboard.html">Dashboard</a>
             <a href="upload.html" class="active">Upload</a>
@@ -364,6 +438,37 @@
             <div class="progress-text" id="progressText">Uploading...</div>
         </div>
 
+        <div class="processing-stages" id="processingStages">
+            <div class="stage" id="stageUpload">
+                <div class="stage-icon">
+                    <i class="fas fa-upload"></i>
+                </div>
+                <div class="stage-text">
+                    <div class="stage-title">Upload Complete</div>
+                    <div class="stage-desc">Audio file uploaded successfully</div>
+                </div>
+            </div>
+            <div class="stage" id="stageProcessing">
+                <div class="stage-icon">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+                <div class="stage-text">
+                    <div class="stage-title">Processing</div>
+                    <div class="stage-desc">Analyzing call recording...</div>
+                </div>
+            </div>
+            <div class="stage" id="stageComplete">
+                <div class="stage-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stage-text">
+                    <div class="stage-title">Analysis Complete</div>
+                    <div class="stage-desc">Preparing your results...</div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="message" id="messageContainer">
             <div class="message-icon" id="messageIcon"></div>
             <h3 id="messageTitle"></h3>
@@ -372,7 +477,7 @@
         </div>
 
         <div class="supported-formats">
-            <h3><i class="fas fa-info-circle"></i> Supported Formats</h3>
+            <h3>Supported Formats</h3>
             <div class="format-list">
                 <span class="format-tag">MP3</span>
                 <span class="format-tag">WAV</span>
@@ -380,16 +485,12 @@
                 <span class="format-tag">OGG</span>
                 <span class="format-tag">FLAC</span>
             </div>
-            <p style="margin-top: 15px; color: rgba(255,255,255,0.5); font-size: 0.9rem;">
-                <i class="fas fa-exclamation-triangle"></i> Maximum file size: 100MB
-            </p>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: rgba(255,255,255,0.5);">Max file size: 100MB</p>
         </div>
     </main>
 
     <script src="js/api.js"></script>
     <script>
-        let selectedFile = null;
-
         const uploadContainer = document.getElementById('uploadContainer');
         const fileInput = document.getElementById('fileInput');
         const fileInfo = document.getElementById('fileInfo');
@@ -401,6 +502,8 @@
         const progressBar = document.getElementById('progressBar');
         const progressText = document.getElementById('progressText');
         const messageContainer = document.getElementById('messageContainer');
+
+        let selectedFile = null;
 
         // Drag and drop handlers
         uploadContainer.addEventListener('dragover', (e) => {
@@ -432,7 +535,6 @@
         // Handle file selection
         function handleFileSelect(file) {
             // Validate file type
-            const allowedTypes = ['audio/mpeg', 'audio/wav', 'audio/m4a', 'audio/ogg', 'audio/flac'];
             const allowedExtensions = ['.mp3', '.wav', '.m4a', '.ogg', '.flac'];
             const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
 
@@ -453,9 +555,9 @@
             // Display file info
             fileName.textContent = file.name;
             fileDetails.innerHTML = `
-        <i class="fas fa-file-audio"></i> ${formatFileSize(file.size)} • 
-        <i class="fas fa-calendar"></i> ${new Date(file.lastModified).toLocaleDateString()}
-      `;
+                <i class="fas fa-file-audio"></i> ${formatFileSize(file.size)} &bull;
+                <i class="fas fa-calendar"></i> ${new Date(file.lastModified).toLocaleDateString()}
+            `;
 
             fileInfo.classList.add('show');
             messageContainer.classList.remove('show');
@@ -471,41 +573,26 @@
             messageContainer.classList.remove('show');
 
             try {
-                // Simulate progress (since fetch doesn't provide upload progress easily)
+                // Simulate progress
                 let progress = 0;
                 const progressInterval = setInterval(() => {
                     progress += 10;
-                    if (progress <= 90) {
-                        progressBar.style.width = progress + '%';
-                    }
+                    if (progress <= 90) { progressBar.style.width = progress + '%'; }
                 }, 200);
 
                 // Upload file
                 const result = await api.uploadAudio(selectedFile);
-
+                
                 clearInterval(progressInterval);
                 progressBar.style.width = '100%';
-                progressText.textContent = 'Upload complete! Processing...';
+                progressText.textContent = 'Upload complete! Starting analysis...';
 
-                // Show success message
-                setTimeout(() => {
-                    showMessage(
-                        'success',
-                        'Upload Successful!',
-                        `Your call has been uploaded and is being processed. Call ID: ${result.call_id}`,
-                        'View Details',
-                        `call-details.html?id=${result.call_id}`
-                    );
+                // Show processing stages
+                document.getElementById('processingStages').classList.add('show');
+                document.getElementById('stageUpload').classList.add('completed');
 
-                    // Reset form
-                    selectedFile = null;
-                    fileInput.value = '';
-                    fileInfo.classList.remove('show');
-                    progressContainer.classList.remove('show');
-                    uploadBtn.disabled = false;
-                    cancelBtn.disabled = false;
-                }, 1000);
-
+                // Start polling for processing status
+                await pollProcessingStatus(result.call_id);
             } catch (error) {
                 console.error('Upload error:', error);
                 showMessage('error', 'Upload Failed', error.message || 'An error occurred during upload. Please try again.');
@@ -521,6 +608,11 @@
             fileInput.value = '';
             fileInfo.classList.remove('show');
             messageContainer.classList.remove('show');
+            progressContainer.classList.remove('show');
+            document.getElementById('processingStages').classList.remove('show');
+            resetStages();
+            uploadBtn.disabled = false;
+            cancelBtn.disabled = false;
         });
 
         // Helper functions
@@ -551,8 +643,76 @@
                 messageAction.style.display = 'none';
             }
         }
+
+        // Poll processing status
+        async function pollProcessingStatus(callId) {
+            const maxAttempts = 60; // 2 minutes max (60 * 2 seconds)
+            let attempts = 0;
+
+            const stageUpload = document.getElementById('stageUpload');
+            const stageProcessing = document.getElementById('stageProcessing');
+            const stageComplete = document.getElementById('stageComplete');
+
+            return new Promise((resolve, reject) => {
+                const pollInterval = setInterval(async () => {
+                    attempts++;
+
+                    try {
+                        const status = await api.getProcessingStatus(callId);
+
+                        if (status.status === 'processing') {
+                            progressBar.style.width = '60%';
+                            progressText.textContent = 'Analyzing call recording...';
+                            stageProcessing.classList.add('active');
+
+                        } else if (status.status === 'completed') {
+                            clearInterval(pollInterval);
+                            progressBar.style.width = '100%';
+                            progressText.textContent = 'Analysis complete!';
+
+                            stageProcessing.classList.remove('active');
+                            stageProcessing.classList.add('completed');
+                            stageComplete.classList.add('completed');
+
+                            setTimeout(() => {
+                                window.location.href = `call-details.html?id=${callId}`;
+                            }, 1500);
+
+                            resolve();
+
+                        } else if (status.status === 'failed') {
+                            clearInterval(pollInterval);
+                            showMessage('error', 'Processing Failed', status.error_message || 'An error occurred during analysis.');
+
+                            progressContainer.classList.remove('show');
+                            document.getElementById('processingStages').classList.remove('show');
+                            resetStages();
+                            uploadBtn.disabled = false;
+                            cancelBtn.disabled = false;
+
+                            reject(new Error(status.error_message));
+                        }
+
+                        if (attempts >= maxAttempts) {
+                            clearInterval(pollInterval);
+                            showMessage('error', 'Processing Timeout', 'Analysis is taking longer than expected. Please check the call details page.');
+                            reject(new Error('Polling timeout'));
+                        }
+
+                    } catch (error) {
+                        console.error('Polling error:', error);
+                    }
+                }, 2000); // Poll every 2 seconds
+            });
+        }
+
+        // Reset processing stages
+        function resetStages() {
+            const stages = document.querySelectorAll('.stage');
+            stages.forEach(stage => {
+                stage.classList.remove('active', 'completed');
+            });
+        }
     </script>
-
 </body>
-
 </html>

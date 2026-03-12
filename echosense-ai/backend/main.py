@@ -11,7 +11,7 @@ from config import get_settings
 from database.connection import init_db
 
 # Import API routers
-from api import upload, processing, analytics
+from api import upload, processing, analytics, training, delete, auth
 
 settings = get_settings()
 
@@ -50,11 +50,26 @@ frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
 if os.path.exists(frontend_path):
     app.mount("/static", StaticFiles(directory=frontend_path, html=True), name="static")
 
+# Mount storage for local development
+storage_path = os.path.join(os.path.dirname(__file__), "..", "storage")
+if not os.path.exists(storage_path):
+    os.makedirs(storage_path)
+app.mount("/storage", StaticFiles(directory=storage_path), name="storage")
+
+# Mount uploads directory
+uploads_path = os.path.join(os.path.dirname(__file__), "uploads")
+if not os.path.exists(uploads_path):
+    os.makedirs(uploads_path)
+app.mount("/uploads", StaticFiles(directory=uploads_path), name="uploads")
+
 
 # Include API routers
 app.include_router(upload.router, prefix="/api/upload", tags=["Upload"])
 app.include_router(processing.router, prefix="/api/processing", tags=["Processing"])
 app.include_router(analytics.router, prefix="/api/analytics", tags=["Analytics"])
+app.include_router(training.router, prefix="/api/training", tags=["Training"])
+app.include_router(delete.router, prefix="/api/calls", tags=["Calls"])
+app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
 
 
 @app.get("/")

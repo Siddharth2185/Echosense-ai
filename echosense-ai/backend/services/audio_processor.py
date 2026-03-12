@@ -2,13 +2,50 @@
 Audio preprocessing and utilities
 """
 import warnings
+import os
 from io import BytesIO
 import numpy as np
+
+# ── Python 3.14 compatibility: restore the removed audioop module ──
+try:
+    import audioop  # noqa: F401  (built-in on Python ≤ 3.12)
+except ImportError:
+    try:
+        import audioop_lts as audioop  # pip install audioop-lts
+        import sys
+        sys.modules["audioop"] = audioop
+    except ImportError:
+        pass  # pydub will still warn, but won't crash
+
+# ── Tell pydub exactly where ffmpeg lives (handles PATH not updated yet) ──
+_FFMPEG_CANDIDATES = [
+    # winget install location
+    r"C:\Users\siddh\AppData\Local\Microsoft\WinGet\Packages"
+    r"\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
+    r"\ffmpeg-8.0.1-full_build\bin\ffmpeg.exe",
+    # common manual installs
+    r"C:\ffmpeg\bin\ffmpeg.exe",
+    r"C:\Program Files\ffmpeg\bin\ffmpeg.exe",
+]
+for _candidate in _FFMPEG_CANDIDATES:
+    if os.path.isfile(_candidate):
+        from pydub import utils as _pydub_utils
+        _pydub_utils.get_prober_name = lambda: "ffprobe"
+        # Monkey-patch the converter path
+        import pydub
+        pydub.AudioSegment.converter = _candidate
+        pydub.AudioSegment.ffmpeg = _candidate
+        pydub.AudioSegment.ffprobe = _candidate.replace("ffmpeg.exe", "ffprobe.exe")
+        print(f"[OK] ffmpeg found at: {_candidate}")
+        break
+else:
+    print("[WARNING] ffmpeg not found in known locations — audio decoding may fail.")
 
 # Try to import pydub, but make it optional for Python 3.14 compatibility
 try:
     from pydub import AudioSegment
     AUDIO_PROCESSING_AVAILABLE = True
+    print("[OK] Audio processing available (pydub + ffmpeg ready)")
 except (ImportError, ModuleNotFoundError) as e:
     warnings.warn(f"[WARNING] Audio processing not available: {e}. Audio features will be limited.")
     print("[WARNING] Audio processing not available. Audio features will be limited.")
